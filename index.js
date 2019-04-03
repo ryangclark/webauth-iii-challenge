@@ -1,9 +1,9 @@
 // Load environment variables if we're not in `production`
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load();
+  require('dotenv').config();
 }
 
-server = require('./server').default;
+server = require('./server');
 
 port = process.env.PORT;
 

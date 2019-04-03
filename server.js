@@ -2,9 +2,10 @@ cors = require('cors');
 express = require('express');
 helmet = require('helmet');
 
-bouncer = require('../auth/bouncer').default;
+// bouncer = require('./auth/bouncer');
+bouncer = require('./auth/bouncer');
 
-authRoutes = require('./auth/auth-routes').default;
+authRoutes = require('./auth/auth-routes');
 userRoutes = require('./users/users-routes');
 
 server = express();
@@ -16,4 +17,4 @@ server.use(cors(), express.json(), helmet());
 server.use('/api/encantado', authRoutes);
 server.use('/api/users', bouncer, userRoutes);
 
-export default server;
+module.exports = server;

@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
+jwt = require('jsonwebtoken');
 
-function bouncer(req, res, next) {
+module.exports = (req, res, next) => {
   const token = req.headers.authorization || null;
 
   if (token) {
@@ -15,6 +15,4 @@ function bouncer(req, res, next) {
   } else {
     res.status(401).json({ message: 'No token provided ' });
   }
-}
-
-export default bouncer;
+};

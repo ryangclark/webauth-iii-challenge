@@ -1,10 +1,9 @@
-import bcrypt from 'bcryptjs';
-import { Router } from 'express';
-import jwt from 'jsonwebtoken';
+bcrypt = require('bcryptjs');
+router = require('express').Router();
+jwt = require('jsonwebtoken');
 
-import { addUser, getUsersByFilter } from '../users/users-model';
-
-const router = Router();
+addUser = require('../users/users-model').addUser;
+getUsersByFilter = require('../users/users-model').getUsersByFilter;
 
 function handleServerError(res, error) {
   console.error(error);
@@ -18,7 +17,7 @@ function handleServerError(res, error) {
  * sent inside the body of the request.
  * Hash the password before saving the user to the database.
  */
-router.post('register', (req, res) => {
+router.post('/register', (req, res) => {
   if (!req.body.username || !req.body.password || !req.body.department) {
     return res.status(400).json({
       message:
@@ -81,4 +80,4 @@ function generateToken(user) {
   return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
-export default router;
+module.exports = router;

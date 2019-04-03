@@ -1,8 +1,6 @@
-import { Router } from 'express';
+getAllUsers = require('./users-model');
 
-import { getAllUsers } from './users-model';
-
-const router = Router();
+const router = require('express').Router();
 
 function handleServerError(res, error) {
   console.error(error);
@@ -25,3 +23,5 @@ router.get('/', (req, res) => {
     .then(userList => res.status(200).json(userList))
     .catch(error => handleServerError(res, error));
 });
+
+module.exports = router;

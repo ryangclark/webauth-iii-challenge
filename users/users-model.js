@@ -1,4 +1,4 @@
-const db = require('../data/dbConfig').default;
+const db = require('../data/dbConfig');
 
 module.exports = {
   addUser,
@@ -12,7 +12,7 @@ async function addUser(user) {
 }
 
 function getAllUsers() {
-  return db('users').select('id', 'username', 'password');
+  return db('users').select('id', 'username', 'passHash');
 }
 
 function getUsersByFilter(filter) {

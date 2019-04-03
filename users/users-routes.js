@@ -1,4 +1,4 @@
-getAllUsers = require('./users-model');
+getAllUsers = require('./users-model').getAllUsers;
 
 const router = require('express').Router();
 

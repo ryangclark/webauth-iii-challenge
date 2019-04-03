@@ -18,17 +18,23 @@ function handleServerError(res, error) {
  * Hash the password before saving the user to the database.
  */
 router.post('/register', (req, res) => {
-  if (!req.body.username || !req.body.password || !req.body.department) {
+  if (!req.body.username || !req.body.password || !req.body.departments) {
     return res.status(400).json({
       message:
-        'Please include `username`, `password`, and `department` properties.'
+        'Please include `username`, `password`, and `departments` properties.'
     });
   }
-  let newUser = req.body;
+  let newUser = {};
+  Object.assign(newUser, req.body);
+  console.log('req.body: ', req.body);
+  console.log('newUser: ', newUser);
+  // delete `password` key because I was dumb and named the column in DB `passHash`
+  delete newUser.password;
   // hash that pass
-  newUser.password = bcrypt.hashSync(newUser.password, 12);
-
-  addUser(req.body)
+  newUser.passHash = bcrypt.hashSync(req.body.password, 10);
+  console.log(newUser);
+  
+  addUser(newUser)
     .then(addedUser => res.status(201).json(addedUser))
     .catch(error => handleServerError(res, error));
 });
@@ -53,7 +59,7 @@ router.post('/login', (req, res) => {
   getUsersByFilter({ username })
     .first()
     .then(storedUser => {
-      if (bcrypt.compareSync(password, storedUser.password)) {
+      if (bcrypt.compareSync(password, storedUser.passHash)) {
         const token = generateToken(storedUser);
 
         return res

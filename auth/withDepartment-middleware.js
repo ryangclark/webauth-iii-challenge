@@ -14,7 +14,6 @@ function withDepartment(departments) {
         return next();
       }
     }
-    console.log('escape!');
     res.status(401).json({ message: 'Invalid Department Credentials' });
   };
 }

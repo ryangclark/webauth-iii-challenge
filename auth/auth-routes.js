@@ -33,7 +33,7 @@ router.post('/register', (req, res) => {
   // hash that pass
   newUser.passHash = bcrypt.hashSync(req.body.password, 10);
   console.log(newUser);
-  
+
   addUser(newUser)
     .then(addedUser => res.status(201).json(addedUser))
     .catch(error => handleServerError(res, error));
@@ -77,7 +77,7 @@ function generateToken(user) {
   const payload = {
     subject: user.id,
     username: user.username,
-    departments: user.departments
+    departments: user.departments.split(' ')
   };
   const options = {
     expiresIn: '12h'

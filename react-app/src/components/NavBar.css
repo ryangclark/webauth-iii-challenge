@@ -1,0 +1,11 @@
+nav {
+  align-items: center;
+  background-color: goldenrod;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.nav-links {
+  color: inherit;
+}

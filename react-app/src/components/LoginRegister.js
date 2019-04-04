@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 const LoginRegister = props => {
   const [redirectToReferrer, setRedirectToReferrer] = useState(false);

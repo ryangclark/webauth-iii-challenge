@@ -1,5 +1,5 @@
 import './NavBar.css';
-import { React } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const NavBar = props => {
@@ -10,7 +10,7 @@ const NavBar = props => {
         {props.userAuthenticated ? (
           <>
             <p className="greeting">Hello, {props.currentUser.username}!</p>
-            <Link to={"/users"}>Users List</Link>
+            <Link to={'/users'}>Users List</Link>
             <a onClick={props.logout()}>Log Out</a>
           </>
         ) : (

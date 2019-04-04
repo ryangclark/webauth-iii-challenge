@@ -78,15 +78,15 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <NavBar
-            isAuthenticated={this.currentUser.isAuthenticated}
+            isAuthenticated={this.state.currentUser.isAuthenticated}
             logout={this.logout}
           />
         </header>
         <Route
           exact
           path="/"
-          render={() => (
-            <LoginRegister login={this.login} register={this.register} />
+          render={props => (
+            <LoginRegister {...props} login={this.login} register={this.register} />
           )}
         />
         <PrivateRoute path="/users" component={UsersContainer} />

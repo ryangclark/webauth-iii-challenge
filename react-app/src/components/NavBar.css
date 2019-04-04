@@ -9,3 +9,12 @@ nav {
 .nav-links {
   color: inherit;
 }
+
+.nav-links > a {
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.nav-links > a:hover {
+  text-decoration: underline;
+}

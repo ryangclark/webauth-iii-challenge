@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+// import { Redirect } from 'react-router-dom';
+import './LoginRegister.css';
 
 const LoginRegister = props => {
-  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
-  let { from } = props.location.state || { from: { pathname: '/' } };
-
-  // props.login(CREDENTIALS).then(setRedirectToReferrer(true));
-
-  if (redirectToReferrer) return <Redirect to={from} />;
-
   let loginFormElement;
   let loginUsernameInput;
   let loginPasswordInput;
@@ -17,20 +11,41 @@ const LoginRegister = props => {
   let registerPasswordInput;
   let registerDepartmentsInput;
 
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+  // let { from } = props.location.state || { from: { pathname: '/' } };
+
+  // props.login(CREDENTIALS).then(setRedirectToReferrer(true));
+
+  // useEffect(() => {
+  //   if (redirectToReferrer) return <Redirect to={from} />;
+  // }, [redirectToReferrer]);
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      props.history.push('/users');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.currentUser && props.currentUser.username) {
+      loginFormElement.reset();
+      // console.log('username', props.currentUser.username);
+      props.history.push('/users');
+    }
+  }, [props.currentUser]);
+
   return (
     <div className="register-login">
       <div className="login">
+        <h2>Login</h2>
         <form
           className="login-form"
           onSubmit={event => {
             event.preventDefault();
-            props
-              .login({
-                username: loginUsernameInput.value,
-                password: loginPasswordInput.value
-              })
-              .then(() => setRedirectToReferrer(true))
-              .then(() => loginFormElement.reset());
+            props.login({
+              username: loginUsernameInput.value,
+              password: loginPasswordInput.value
+            });
           }}
           ref={node => (loginFormElement = node)}
         >
@@ -60,6 +75,7 @@ const LoginRegister = props => {
         </form>
       </div>
       <div className="register">
+        <h2>Register</h2>
         <form
           className="register-form"
           onSubmit={event => {
@@ -68,12 +84,10 @@ const LoginRegister = props => {
               .register({
                 username: registerUsernameInput.value,
                 password: registerPasswordInput.value,
-                departments: registerDepartmentsInput
+                departments: registerDepartmentsInput.value
                   .split(',')
                   .forEach(item => item.trim())
               })
-              .then(() => setRedirectToReferrer(true))
-              .then(() => registerFormElement.reset());
           }}
           ref={node => (registerFormElement = node)}
         >

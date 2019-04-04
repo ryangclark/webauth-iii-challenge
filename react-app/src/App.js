@@ -19,36 +19,38 @@ class App extends Component {
   }
 
   login = credentials => {
+    // console.log('login running!', credentials);
     axios
       .post('http://localhost:4000/api/encantado/login', credentials)
       .then(response => {
+        console.log('Login Reponse', response);
         if (response.status === 201) {
-          this.setState(() => ({
+          this.setState({
             currentUser: {
               isAuthenticated: true,
-              username: credentials.username
+              username: response.data.token
             },
             serverError: { status: false, error: null }
-          }));
+          });
           localStorage.setItem('token', response.data.token);
-          return;
+          console.log('good response!', this.state.currentUser);
+          return response.status;
         } else {
-          console.error(response.status, response.statusText);
-          this.setState(() => ({
+          console.error('BAD LOGIN RESPONSE: ', response);
+          this.setState({
             serverError: { status: true, error: response.statusText }
-          }));
+          });
         }
       })
       .catch(error => {
         console.error(error);
-        this.setState(() => ({ serverError: { status: true, error: error } }));
+        this.setState({ serverError: { status: true, error: error } });
       });
   };
 
   logout = () => {
     this.setState(() => ({
-      currentUser: {},
-      isAuthenticated: false,
+      currentUser: { isAuthenticated: false, username: '' },
       serverError: { status: false, error: null }
     }));
     localStorage.removeItem('token');
@@ -77,16 +79,18 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <NavBar
-            isAuthenticated={this.state.currentUser.isAuthenticated}
-            logout={this.logout}
-          />
+          <NavBar currentUser={this.state.currentUser} logout={this.logout} />
         </header>
         <Route
           exact
           path="/"
           render={props => (
-            <LoginRegister {...props} login={this.login} register={this.register} />
+            <LoginRegister
+              {...props}
+              currentUser={this.state.currentUser}
+              login={this.login}
+              register={this.register}
+            />
           )}
         />
         <PrivateRoute path="/users" component={UsersContainer} />

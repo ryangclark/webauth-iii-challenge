@@ -6,7 +6,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        this.state.currentUser.isAuthenticated ? (
+        localStorage.getItem('token') ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: '/' }} />

@@ -7,16 +7,16 @@ const NavBar = props => {
     <nav>
       <h2>React App Thing</h2>
       <div className="nav-links">
-        {props.userAuthenticated ? (
+        {props.currentUser.isAuthenticated || localStorage.getItem('token') ? (
           <>
             <p className="greeting">Hello, {props.currentUser.username}!</p>
             <Link to={'/users'}>Users List</Link>
-            <a onClick={props.logout()}>Log Out</a>
+            <p onClick={props.logout()}>Log Out</p>
           </>
         ) : (
           <>
-            <a>Register</a>
-            <a>Log In</a>
+            <Link to={'/'}>Register</Link>
+            <Link to={'/'}>Log In</Link>
           </>
         )}
       </div>

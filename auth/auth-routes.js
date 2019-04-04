@@ -59,6 +59,9 @@ router.post('/login', (req, res) => {
   getUsersByFilter({ username })
     .first()
     .then(storedUser => {
+      if (!storedUser) {
+        return res.status(404).json({ message: 'Invalid Credentials!' });
+      }
       if (bcrypt.compareSync(password, storedUser.passHash)) {
         const token = generateToken(storedUser);
 

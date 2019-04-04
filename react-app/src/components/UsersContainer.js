@@ -1,5 +1,5 @@
-import { React, useEffect, useState } from 'react';
-import axiosAuth from '../actions/axiosAuth';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 import User from './User';
 
@@ -11,10 +11,12 @@ const UsersContainer = props => {
   const [usersList, setUsersList] = useState([]);
 
   useEffect(() => {
-    axiosAuth
-      .get('http://localhost:4000/api/users')
+    axios
+      .get('http://localhost:4000/api/users', {
+        headers: { authorization: localStorage.getItem('token') }
+      })
       .then(response => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           setServerError({
             status: false,
             error: null
@@ -27,12 +29,13 @@ const UsersContainer = props => {
           });
         }
       })
-      .catch(error =>
+      .catch(error => {
+        console.error(error);
         setServerError({
           status: true,
           error: error
-        })
-      );
+        });
+      });
   }, []);
 
   return (
@@ -40,7 +43,7 @@ const UsersContainer = props => {
       {serverError.status ? (
         <>
           <h2>Server Error!</h2>
-          <p>{serverError.error}</p>
+          {/* <p>{serverError.error}</p> */}
         </>
       ) : (
         <div className="users-list">
